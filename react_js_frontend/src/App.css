@@ -22,11 +22,119 @@
 }
 
 .App {
-  text-align: center;
+  min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  display: flex;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar {
+  min-width: 200px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-right: 1px solid var(--border-color);
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  padding: 1.2rem 0 0.8rem 0.3rem;
+  font-weight: 700;
+  gap: 0.7em;
+}
+.sidebar-title {
+  margin-left: 0.3em;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: 1.2em;
+}
+.sidebar li {
+  margin-bottom: 0.7em;
+  width: 100%;
+}
+.sidebar li.active, .sidebar li:hover {
+  background: var(--text-secondary);
+  border-radius: 8px;
+}
+.sidebar li a {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.8em 1.1em;
+  display: block;
+}
+
+.main-content {
+  margin-left: 208px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  width: 100%;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2rem 0.8rem 1.6rem;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+.topbar-left .topbar-timer-btn {
+  background: var(--button-bg); color: var(--button-text); border: none;
+  padding: 0.6em 1.2em; border-radius: 6px;
+  font-weight: 600; cursor: pointer; font-size: 1em; transition: all 0.18s;
+}
+.topbar-left .topbar-timer-btn:hover { opacity: 0.85; }
+.topbar-user-info { margin-left: 1.3em; font-size: 1em; opacity: 0.8; }
+
+.theme-toggle {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.3em;
+  transition: all 0.25s;
+}
+.theme-toggle:hover { opacity: 0.85; background: var(--accent, #3182ce); }
+
+.page-container {
+  padding: 2.5em 2.1em 2em 0.5em;
+  flex: 1 0 auto;
+  min-height: 80vh;
+  width: 100%;
+}
+
+h2 { font-size: 2.1em; margin-bottom: 0.8rem; margin-top: 0.8rem; }
+
+@media (max-width: 768px) {
+  .sidebar { min-width: 65px; }
+  .sidebar .sidebar-title { display: none; }
+  .main-content { margin-left: 67px; }
+  .topbar { padding: 0.7rem 0.8rem 0.7rem 0.8rem; }
+  .page-container { padding: 1em 0.7em 2.5em 0.6em; }
 }
 
 .App-logo {

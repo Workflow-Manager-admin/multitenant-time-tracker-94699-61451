@@ -1,82 +1,127 @@
-# Lightweight React Template for KAVIA
+# Multitenant Time Tracker (React Frontend)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+Minimalist & robust frontend for tracking time, projects, clients, and technologies, supporting secure multi-tenant organizations.
 
-## Features
+---
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+## 📋 Architectural Overview
 
-## Getting Started
+- **Platform:** React (SPA)
+- **UI Structure:** Sidebar navigation, top bar (actions/user), main dashboard area, modal dialogs for edit/add.
+- **Theme:** Modern, minimalist, auto-adapting (light/dark).
+- **REST API:** Communicates via JSON with FastAPI backend (endpoints as per architecture docs).
+- **State:** Stateless between sessions; session/user/tenant info kept in browser (token/cookie).
 
-In the project directory, you can run:
+**Component Map:**
 
-### `npm start`
+- `App`: Root application, theme/context providers, routes setup
+- `Sidebar`: Persistent navigation (Dashboard, Clients, Projects, Time Entries, Reports, Settings/Profile)
+- `TopBar`: Quick actions (timer, add), theme toggle, current user/org
+- `Dashboard`: Widgets for hour/project/tech/client summaries, recent activity
+- `Auth`: Login / Register / Tenant select flows, using backend auth endpoints
+- `Clients`, `Projects`, `Technologies`: CRUD pages/tables for each entity, with modal dialogs
+- `TimeEntries`: List of recorded work, manual entry/edit
+- `Timer`: Floating or top-bar timer UI (start, stop, active session view)
+- `Reports`: Filters, export actions, summary
+- `Profile/Settings`: Password/email update, tenant switching
+- `NotFound`: 404/Error view
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-### `npm test`
+## 🎯 Features (See also Product Requirements)
 
-Launches the test runner in interactive watch mode.
+- Authentication & multi-tenant login (JWT/session, per-tenant scope)
+- Dashboard: Summaries for hours by project, client, technology, user, recent activity
+- Start/stop timers for tracked sessions (precise, prevents overlap)
+- Manual time entry (edit/correct sessions)
+- Technologies/tagging for sessions & projects
+- CRUD UI for clients, projects, technologies, time entries (all tenant-scoped)
+- Export reporting (CSV, Excel) with advanced filters
+- Responsive, accessible layout (mobile/desktop parity)
+- Minimalist, modern, A11Y-compliant design
+- Strict tenant scoping on all data/actions
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🏛️ Mapping - User Stories & Requirements Compliance
 
-## Customization
+| Feature/Epic             | Frontend Component         | Status     | Tests   |
+|------------------------- |---------------------------|------------|---------|
+| Auth & Tenant Login      | `Auth/Login/SelectTenant` | Todo       | [ ]     |
+| Dashboard                | `Dashboard`, `Widgets`    | Planned    | [ ]     |
+| Timer & Time Entry       | `Timer`, `TimeEntries`    | Planned    | [ ]     |
+| CRUD: Clients/Projects   | `Clients`, `Projects`     | Planned    | [ ]     |
+| Tech Tags Mgmt           | `Technologies`            | Planned    | [ ]     |
+| Reporting/Export         | `Reports`                 | Planned    | [ ]     |
+| Profile/Settings         | `Profile/Settings`        | Future     | [ ]     |
+| A11Y/Theme               | `ThemeProvider`, global   | ✅ Initial | [x]     |
 
-### Colors
+- See [kavia-docs/user-stories.md](../kavia-docs/user-stories.md) for acceptance criteria details.
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+---
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+## 🧑‍💻 Development/Extensibility Notes
 
-### Components
+- All components use plain React; no heavy UI libraries (CSS in App.css and per-component).
+- Sidebar and TopBar are present on all main pages, adapt responsively. Routing via `react-router-dom`.
+- REST API base configured per environment (env var), all API calls scoped to signed-in tenant.
+- Theming, A11Y and mobile responsiveness considered core (see `App.css` for variables).
+- Add new features by dropping into `/src/components` and connecting to routes/context.
+- For E2E/unit tests see `/src/__tests__/` and [setupTests.js](src/setupTests.js).
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+---
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+## 🛂 Security & Compliance (QA)
 
-## Learn More
+- All data strictly filtered by tenant session.
+- App forces login/session on all main routes except `/login`.
+- No direct DB or external API requests outside backend REST layer.
+- JS tests are required for critical auth/session UI, core CRUD forms, and API error handling.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🚦 Quickstart
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+See below for running/testing.
 
-### Analyzing the Bundle Size
+(In the project directory):
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- `npm start` — dev mode at [localhost:3000](http://localhost:3000)
+- `npm test` — runs all test suites
+- `npm run build` — production build to `/build`
+- `npm run lint` — lint
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🎨 Customization (Colors, Components)
 
-### Advanced Configuration
+- Main colors in [src/App.css](src/App.css):
+  ```
+  :root {
+    --primary-dark: #1a202c;
+    --secondary: #2d3748;
+    --accent: #3182ce;
+    ...
+  }
+  ```
+- Add or change components in `/src/components`, styles in `/src/App.css` or component CSS.
+- Common component conventions: Buttons (`.btn`), Containers (`.container`), Sidebar (`.sidebar`), TopBar (`.topbar`), Widgets, Modals.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🔗 References
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- [Architecture Docs](../kavia-docs/architecture.md)
+- [UI & Design Docs](../kavia-docs/ui-and-architecture-design.md)
+- [Product Requirements](../kavia-docs/product-requirements.md)
+- [User Stories](../kavia-docs/user-stories.md)
+- [Database Schema](../kavia-docs/database-schema.md)
+- [QA Checklist](../kavia-docs/qa-checklist.md)
+- [Frontend Gap Analysis](../kavia-docs/frontend-gap-analysis.md)
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## ⚡️ Next Steps
+
+See `kavia-docs/frontend-gap-analysis.md` for checklist and track delivery & compliance as features land.
+
